@@ -1,0 +1,33 @@
+{
+  "name": "yektanet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-index": "nodemon index.js",
+    "start-worker": "nodemon worker.js",
+    "start": "concurrently --kill-others \"npm run start-index\" \"npm run start-worker\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.0",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "kue": "^0.11.6",
+    "kue-ui-express": "^1.1.1",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^5.9.5",
+    "morgan": "^1.10.0",
+    "redis": "^3.0.2",
+    "useragent": "^2.3.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
