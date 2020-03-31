@@ -4,7 +4,8 @@ const { LOG_TYPES } = require('../models/LogConstants');
 const logger = require('../helpers/logger');
 const { maxLength } = require('../config/app');
 const useragent = require('useragent');
-const { set: analyticsJobs } = require('../jobs/analytics.jobs')
+const { set: urlLogJobs } = require('../jobs/urlLog.jobs');
+const { User } = require('../models/user.model');
 
 urlController.createShortUrl = async (req, res) => {
     try {
@@ -15,6 +16,15 @@ urlController.createShortUrl = async (req, res) => {
         }
         let path = req.body.pathUser;
         let id = await generate(path);
+
+        let filter = { '_id': req.user.id };
+        User.findOne(filter, function(err, doc){
+            doc.urls.push({
+                "url" : req.body.url,
+                "shortUrl" : req.protocol + "://" + req.get('host') + '/' + id
+            });
+            doc.save();
+        });        
         
         data.id = id;
         await create(data);
@@ -44,7 +54,6 @@ urlController.createShortUrl = async (req, res) => {
 
 urlController.findRedirect = async function(req, res) {
     try {
-
         let id = req.params.slug;
         let agent = useragent.parse(req.headers['user-agent']);
         let ip = req.client.remoteAddress
@@ -66,7 +75,7 @@ urlController.findRedirect = async function(req, res) {
                         "os": os,
                         "browser": browser
                     } ;
-                    analyticsJobs(data);
+                    urlLogJobs(data);
 
                     res.redirect(result.url);
                 }

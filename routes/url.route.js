@@ -3,7 +3,7 @@ const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 const urlController = require('../controller/urlController');
-const urlAnalyticsController = require('../controller/urlAnalyticsController')
+const urlLogController = require('../controller/urlLogController')
 
 //body post =>
 //"url" : "https://www.sitepoint.com/using-redis-node-js/",
@@ -20,6 +20,6 @@ router.post("/shortUrl", auth, urlController.createShortUrl);
 //or user 
 //or user_os 
 //or user_browser
-router.get("/getdetail", auth, urlAnalyticsController.getDetail); 
+router.get("/getdetail", auth, urlLogController.getDetail); 
 
 module.exports = router;

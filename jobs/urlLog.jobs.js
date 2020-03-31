@@ -11,7 +11,7 @@ const DELAY       = 1 * 1000, // 1 second
       ATTEMPTS    = 3;
 
 const set = function (data) {
-  let job = queue.create('analyticsJobs', {
+  let job = queue.create('urlLogJobs', {
     title: `URL detail request`,
     data,
   })

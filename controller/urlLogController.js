@@ -1,10 +1,10 @@
-const urlAnalyticsController = {};
+const urlLogController = {};
 const { LOG_TYPES } = require('../models/LogConstants');
 const logger = require('../helpers/logger');
 const urlService = require('../services/url.service');
-const { validateUrl } = require('../models/url.model');
+const { validateUrl } = require('../models/urlLog.model');
 
-urlAnalyticsController.getDetail = async (req,res,next) =>{
+urlLogController.getDetail = async (req,res,next) =>{
     try {
         // validate the request body first
         const { error } = validateUrl(req.query);
@@ -47,5 +47,4 @@ urlAnalyticsController.getDetail = async (req,res,next) =>{
     }
 }
 
-
-module.exports = urlAnalyticsController;
+module.exports = urlLogController;

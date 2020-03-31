@@ -1,19 +1,19 @@
 const logger = require('../helpers/logger');
 const { LOG_TYPES } = require('../models/LogConstants');
-const { Url } = require('../models/url.model');
+const { UrlLog } = require('../models/urlLog.model');
 const urlService = {};
 
 urlService.create = async (data) => {
     let logData;
     try {
-        const urlModel = new Url({
+        const urlLogModel = new UrlLog({
             userId: data.userId,
             urlSlug: data.urlSlug,
             ip: data.ip,
             os: data.os,
             browser: data.browser  
         });
-        await urlModel.save();
+        await urlLogModel.save();
 
         logData = {
             logType: LOG_TYPES.YEKTANET,
@@ -101,17 +101,17 @@ const generateDate = async (peroid) => {
     }
 }
 const getUrlRequestCount = async (data) => {
-    let result = await Url.aggregate([ 
+    let result = await UrlLog.aggregate([ 
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {$group:{_id:{slug:'$urlSlug' }, count:{$sum:1}}}, 
         {$group:{_id:'$_id.slug', count:{$first:'$count'}}}
     ]);
-
+   
     return result;
 }
 
 const getUrlRequestCountOS = async (data) => {
-    let result = await Url.aggregate([
+    let result = await UrlLog.aggregate([
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {
           $group:{
@@ -133,7 +133,7 @@ const getUrlRequestCountOS = async (data) => {
 }
 
 const getUrlRequestCountBrowser = async (data) => {
-    let result = await Url.aggregate([
+    let result = await UrlLog.aggregate([
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {
           $group:{
@@ -154,7 +154,7 @@ const getUrlRequestCountBrowser = async (data) => {
 }
 
 const getUrlRequestIpCount = async (data) => {
-    let result = await Url.aggregate([
+    let result = await UrlLog.aggregate([
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {
           $group:{
@@ -175,7 +175,7 @@ const getUrlRequestIpCount = async (data) => {
 }
 
 const getUrlRequestIpCountOS = async (data) => {
-    let result = await Url.aggregate([
+    let result = await UrlLog.aggregate([
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {
           $group:{
@@ -196,7 +196,7 @@ const getUrlRequestIpCountOS = async (data) => {
 }
 
 const getUrlRequestIpCountBrowser = async (data) => {
-    let result = await Url.aggregate([
+    let result = await UrlLog.aggregate([
         { $match : { userId : data.userId, createdAt: { $gte: data.start, $lt: data.end }} },
         {
           $group:{
@@ -218,7 +218,7 @@ const getUrlRequestIpCountBrowser = async (data) => {
 
 urlService.getReports = async (data) => {
     let logData;
-    // try {
+    try {
         let response;
         let generate = await generateDate(data.period);
         data.start = generate.start;
@@ -256,17 +256,17 @@ urlService.getReports = async (data) => {
         logger.createLogRecord(logData);
         return response;
 
-    // }catch(err){
-    //     logData = {
-    //         logType: LOG_TYPES.YEKTANET,
-    //         logStatus: 'fail',
-    //         payload: JSON.stringify(data),
-    //         logMessage: 'get report fail',
-    //         shouldBeLogged: false,
-    //     };
-    //     logger.createLogRecord(logData);
-    //     return false;
-    // }
+    }catch(err){
+        logData = {
+            logType: LOG_TYPES.YEKTANET,
+            logStatus: 'fail',
+            payload: JSON.stringify(data),
+            logMessage: 'get report fail',
+            shouldBeLogged: false,
+        };
+        logger.createLogRecord(logData);
+        return false;
+    }
 }
 
 module.exports = urlService;

@@ -37,8 +37,21 @@ const UserSchema = new Schema({
         type: String,
         required: true
     }
-  }]
-
+  }],
+  urls: {
+    type: [{
+        url: {
+            type: String,
+            required: true
+        },
+        shortUrl: {
+            type: String,
+            required: true
+        }
+    }],
+    required: false,
+    default: []
+  }
 }, {timestamps : true});
 
 //custom method to generate authToken 

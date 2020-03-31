@@ -2,7 +2,7 @@ const mongoose = require("../adapters/mongoose");
 const Schema = mongoose.Schema;
 const Joi = require('joi');
 
-const UrlSchema = new Schema({
+const UrlLogSchema = new Schema({
   userId: {
     type: String,
     required: true
@@ -25,7 +25,7 @@ const UrlSchema = new Schema({
 
 }, {timestamps : true});
 
-const Url = mongoose.model('Urls', UrlSchema);
+const UrlLog = mongoose.model('Urls', UrlLogSchema);
 
 //function to validate user 
 function validateUrl(request) {
@@ -37,4 +37,4 @@ function validateUrl(request) {
     return Joi.validate(request, schema);
   }
 
-module.exports = {Url , validateUrl}; 
+module.exports = {UrlLog , validateUrl}; 
