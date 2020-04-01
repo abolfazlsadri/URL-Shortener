@@ -6,8 +6,21 @@ const logger = require('../helpers/logger');
 userController.login = async (req,res,next) =>{
     
     try {
-        const { email, password } = req.body
-        const user = await User.findByCredentials(email, password)
+        const email = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        let user;
+
+        if (typeof email != "undefined" && typeof password != "undefined") {
+            user = await User.findByCredentialsEmail(email, password)
+        } else if(typeof username != "undefined" && typeof password != "undefined") {
+            user = await User.findByCredentialsUsername(username, password)
+        } else {
+            res.status(403).json({
+                error: 'username or email required'
+            });
+        }
+       
         if (!user) {
             return res.status(401).json({error: 'Login failed! Check authentication credentials'})
         }

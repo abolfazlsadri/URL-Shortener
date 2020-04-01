@@ -30,10 +30,9 @@ const UrlLog = mongoose.model('Urls', UrlLogSchema);
 //function to validate user 
 function validateUrl(request) {
     const schema = {
-      period: Joi.string().required(), // today , yesterday , week , mounth
-      type: Joi.string().required() // url , url_os , url_browser , user , user_os , user_browser
+      period: Joi.valid(['today', 'yesterday', 'week', 'mounth']).required(),
+      type: Joi.valid(['url', 'url_os', 'url_browser', 'user', 'user_os', 'user_browser']).required()
     };
-  
     return Joi.validate(request, schema);
   }
 
