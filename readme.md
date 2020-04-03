@@ -86,3 +86,8 @@ This section should contain information about each of the shortened URLs, give i
  2. Navigate to the project's directory with: `cd URL-Shortener`
  3. Run `npm install` to install dependencies
  4. Run  `npm run start` to start the server on a local host
+
+ ### License
+
+Copyright © 2020, [Abolfazl sadri](https://github.com/abolfazlsadri).
+Released under the [MIT License](LICENSE).
