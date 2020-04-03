@@ -90,4 +90,4 @@ This section should contain information about each of the shortened URLs, give i
  ### License
 
 Copyright © 2020, [Abolfazl sadri](https://github.com/abolfazlsadri).
-Released under the [MIT License](LICENSE).
+Released under the [Apache License](LICENSE).
